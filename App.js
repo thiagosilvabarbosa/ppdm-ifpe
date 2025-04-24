@@ -1,240 +1,300 @@
-import React from "react";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from "react-native";
-import { Avatar } from "react-native-elements";
+import React, { useLayoutEffect } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import { Avatar, Text, Input } from "react-native-elements";
+import { Button, ListItem } from "@rneui/themed";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer,useNavigation,useRoute } from '@react-navigation/native';
+import { useState } from "react";
 
-export default function App() {
-  const [pagina, setPagina] = React.useState("home");
-  const avatar =
-    "https://static.vecteezy.com/system/resources/previews/046/300/541/non_2x/avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-for-social-media-profiles-icons-screensavers-free-png.png";
+const Stack = createStackNavigator();
 
-  React.useEffect(() => {
-    console.log(pagina);
-  }, [pagina]);
+const DATA = [
+  {
+    id: '1',
+    name: 'Thiago Barbosa',
+    number: "8199999999",
+    mail:"thiago@gmail.com",
+    avatar: 'https://randomuser.me/api/portraits/men/63.jpg'
+  },
+  {
+    id: '2',
+    name: 'Levi Renato',
+    number: "8188888888",
+    mail:"levi@gmail.com",
+    avatar: 'https://randomuser.me/api/portraits/men/11.jpg'
+  },
+  {
+    id: '3',
+    name: 'Rosilene Silva',
+    number: "8177777777",
+    mail:"rosilene@gmail.com",
+    avatar: 'https://randomuser.me/api/portraits/women/27.jpg'
+  },
+];
 
+
+const Login = ({ navigation }) => {
   return (
-    <View style={estilos.container}>
-      {pagina === "home" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <Avatar size={100} rounded source={{ uri: avatar }} />
-          </View>
-          <View>
-            <View style={estilos.campoEntrada}>
-              <Text>Email</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu email" />
-            </View>
-            <View style={estilos.campoEntrada}>
-              <Text>Senha</Text>
-              <TextInput style={estilos.inputTexto} secureTextEntry placeholder="Digite sua senha" />
-            </View>
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "blue" }]} onPress={()=> setPagina("ListaContatos")}> 
-              <Text style={estilos.textoBotao}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "red" }]} onPress={() => setPagina("cadastro")}>
-              <Text style={estilos.textoBotao}>Cadastrar-se</Text>
-            </TouchableOpacity>
-            <Text style={estilos.textoLink} onPress={() => setPagina("forgotPassword")}>
-              Esqueceu a senha
-            </Text>
-          </View>
-        </View>
-      )}
-
-      {pagina === "cadastro" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <Text style={estilos.tituloPagina}>Cadastro</Text>
-          </View>
-          <View>
-            <View style={estilos.campoEntrada}>
-              <Text>Nome</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu nome" />
-            </View>
-            <View style={estilos.campoEntrada}>
-              <Text>CPF</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu CPF" />
-            </View>
-            <View style={estilos.campoEntrada}>
-              <Text>Email</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu email" />
-            </View>
-            <View style={estilos.campoEntrada}>
-              <Text>Senha</Text>
-              <TextInput style={estilos.inputTexto} secureTextEntry placeholder="Crie uma senha" />
-            </View>
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "green" }]} onPress={() => setPagina("home")}>
-              <Text style={estilos.textoBotao}>Salvar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {pagina === "forgotPassword" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 20 }}>
-            <Text style={estilos.tituloPagina}>Esqueceu a senha</Text>
-          </View>
-          <View>
-            <View style={estilos.campoEntrada}>
-              <Text>Email</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu email" />
-            </View>
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "green" }]} onPress={() => setPagina("home")}>
-              <Text style={estilos.textoBotao}>Enviar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {pagina === "contato" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 50 }}>
-            <Text style={estilos.tituloPagina}>Contato</Text>
-          </View>
-          <View>
-            <View style={estilos.campoEntrada}>
-              <Text>Nome</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu nome" />
-            </View>
-
-            <View style={estilos.campoEntrada}>
-              <Text>Email</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu email" />
-            </View>
-
-            <View style={estilos.campoEntrada}>
-              <Text>Telefone</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu telefone" />
-            </View>
-
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "blue" }]} onPress={() => setPagina("ListaContatos")}>
-              <Text style={estilos.textoBotao}>Salvar</Text>
-            </TouchableOpacity>
-            
-          </View>
-        </View>
-      )}
-
-      {pagina === "EditarContato" && (
-        <View>
-          <View style={{ alignItems: "center", marginBottom: 50 }}>
-            <Text style={estilos.tituloPagina}>Editar Contato</Text>
-          </View>
-          <View>
-            <View style={estilos.campoEntrada}>
-              <Text>Nome</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu nome" />
-            </View>
-
-            <View style={estilos.campoEntrada}>
-              <Text>Email</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu email" />
-            </View>
-
-            <View style={estilos.campoEntrada}>
-              <Text>Telefone</Text>
-              <TextInput style={estilos.inputTexto} placeholder="Digite seu telefone" />
-            </View>
-
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "blue" }]} onPress={() => setPagina("ListaContatos")}>
-              <Text style={estilos.textoBotao}>Editar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "red" }]} onPress={() => setPagina("ListaContatos")}>
-              <Text style={estilos.textoBotao}>Excluir</Text>
-            </TouchableOpacity>
-            
-          </View>
-        </View>
-      )}
-
-      {pagina === "ListaContatos" && (
-        <View>
-        <View style={{ alignItems: "center", marginBottom: 20 }}>
-          <Text style={estilos.tituloPagina}>Lista de Contatos</Text>
-        </View>
-        
-        <FlatList
-          data={[
-            { id: '1', nome: 'Marcos Andrade', telefone: '81 988553424' },
-            { id: '2', nome: 'Patrícia Tavares', telefone: '81 998765332' },
-            { id: '3', nome: 'Rodrigo Antunes', telefone: '81 987765525' },
-          ]}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={estilos.cartaoContato} onPress={() => setPagina("EditarContato")}>
-
-            <Avatar size={50} rounded source={{ uri: avatar }} />
-              <View style={{ marginLeft: 10 }}>
-                <Text style={estilos.nomeContato}>{item.nome}</Text>
-                <Text style={estilos.telefoneContato}>{item.telefone}</Text>
-              </View>
-              </TouchableOpacity> 
-          )}
+    <View style={styles.container}>
+      <Avatar
+        size="xlarge"
+        rounded
+        source={{
+          uri: "https://static.vecteezy.com/system/resources/previews/046/300/541/non_2x/avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-for-social-media-profiles-icons-screensavers-free-png.png",
+        }}
+      />
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Email</Text>
+        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+        <Text style={styles.label}>Senha</Text>
+        <Input
+          placeholder="Senha"
+          secureTextEntry={true}
+          containerStyle={styles.senhaContainer}
         />
-            <TouchableOpacity style={[estilos.botaobackground, { backgroundColor: "blue" }]} onPress={() => setPagina("contato")}>
-              <Text style={estilos.textoBotao}>Criar contato</Text>
-            </TouchableOpacity>    
       </View>
-      )}      
+
+      <View style={styles.ButtomContainer}>
+        <Button onPress={() => navigation.navigate("Lista")}
+          buttonStyle={{
+            marginBottom: 30,
+          }}
+        >
+          Login
+        </Button>
+        <Button onPress={() => navigation.navigate("Cadastro")}>
+          Cadastre-se
+        </Button>
+      </View>
+      <Button type="clear" onPress={() => navigation.navigate("Redefinir")} buttonStyle={{
+        marginTop: 50,
+      }}>
+        Esqueceu a senha?
+      </Button>
     </View>
   );
+};
+
+const Cadastro = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Nome</Text>
+        <Input placeholder="Nome" containerStyle={styles.emailContainer} />
+        <Text style={styles.label}>Cpf</Text>
+        <Input placeholder="CPF" containerStyle={styles.cpfContainer} />
+        <Text style={styles.label}>Email</Text>
+        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+        <Text style={styles.label}>Senha</Text>
+        <Input placeholder="Senha" containerStyle={styles.senhaContainer} />
+      </View>
+
+      <View style={styles.ButtomContainer}>
+        <Button
+          onPress={() => navigation.navigate("Login")}
+          buttonStyle={{
+            marginBottom: 20,
+          }}
+        >Salvar
+        </Button>
+      </View>
+    </View>
+  );
+};
+
+const Lista = () => {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Ionicons
+          size={"large"}
+          name="add-circle"
+          onPress={() => navigation.navigate("Contato")}
+        />
+      ),
+    });
+  }, [navigation]);
+
+  return (
+    <FlatList
+      data={DATA}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <ListItem
+          bottomDivider
+          onPress={() => navigation.navigate("Alteracontato", {
+            name: item.name,
+            number: item.number,
+            mail: item.mail,
+            avatar: item.avatar,
+            id: item.id })}
+        >
+          <Avatar source={{ uri: item.avatar }} size="large" />
+          <ListItem.Content>
+            <ListItem.Title>{item.name}</ListItem.Title>
+            <ListItem.Title>{item.number}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      )}
+    />
+  );
+};
+const Contato = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Nome</Text>
+        <Input placeholder="Nome" containerStyle={styles.emailContainer} />
+        <Text style={styles.label}>Email</Text>
+        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+        <Text style={styles.label}>Telefone</Text>
+        <Input placeholder="Telefone" containerStyle={styles.senhaContainer} />
+      </View>
+
+      <View style={styles.ButtomContainer}>
+        <Button
+          onPress={() => navigation.navigate("Lista")}
+          buttonStyle={{
+            marginBottom: 20,
+          }}
+        >
+          Salvar
+        </Button>
+      </View>
+    </View>
+  );
+};
+
+const Alteracontato = () => {
+  const route= useRoute()
+  const { name: initialName, number: initialNumber, mail: initialMail } = route.params;
+
+  const [name, setName] = useState(initialName);
+  const [number, setNumber] = useState(initialNumber);
+  const [mail, setMail] = useState(initialMail);
+
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Nome</Text>
+        <Input
+          value={name}
+          onChangeText={setName}
+          containerStyle={styles.emailContainer}
+        />
+
+        <Text style={styles.label}>Email</Text>
+        <Input
+          value={mail}
+          onChangeText={setMail}
+          containerStyle={styles.emailContainer}
+        />
+
+        <Text style={styles.label}>Telefone</Text>
+        <Input
+          value={number}
+          onChangeText={setNumber}
+          containerStyle={styles.senhaContainer}
+        />
+      </View>
+      <View style={styles.ButtomContainer}>
+        <Button
+          buttonStyle={{
+            marginBottom: 20,
+          }}
+        >
+          Alterar
+        </Button>
+        <Button
+          buttonStyle={{
+            marginBottom: 20,
+            backgroundColor: "red",
+          }}
+        >
+          Excluir
+        </Button>
+      </View>
+    </View>
+  )
 }
 
-const estilos = StyleSheet.create({
+const Redefinir = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Email</Text>
+        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+      </View>
+
+      <View style={styles.ButtomContainer}>
+        <Button
+          onPress={() => {
+            alert("Email enviado caso exista uma conta");
+            navigation.navigate("Login");
+          }}
+          buttonStyle={{
+            marginBottom: 20,
+          }}
+        >
+          Enviar
+        </Button>
+      </View>
+    </View>
+  );
+};
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    marginTop: 100,
   },
-  campoEntrada: {
-    marginBottom: 5,
+  formContainer: {
+    width: "60%",
+    marginTop: "20%",
   },
-  inputTexto: {
-    backgroundColor: "#E5E5E5",
-    padding: 10,
-    borderRadius: 8,
-    width: 250,
+  emailContainer: {
+    marginBottom: 10,
   },
-  botaobackground: {
-    marginVertical: 10,
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
+  senhaContainer: {
+    marginBottom: 10,
   },
-  textoBotao: {
-    color: "#E5E5E5",
-    fontWeight: "bold",
+  cpfContainer: {
+    marginBottom: 10,
   },
-  tituloPagina: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  textoLink: {
-    textAlign: "center",
-    color: "blue",
-    marginTop: 10,
-  },
-
-  cartaoContato: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 8,
-    width: 300,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  nomeContato: {
-    fontWeight: "bold",
+  label: {
     fontSize: 16,
-    color: "#2E2E2E",
+    fontWeight: "bold",
   },
-  telefoneContato: {
-    color: "#555",
+  ButtomContainer: {
+    width: "40%"
+  },
+  item: {
+    backgroundColor: "#ffff",
+    padding: 5,
+    marginBottom: 8,
+    
+  },
+  title: {
+    fontSize: 25,
   },
 });
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Cadastro" component={Cadastro} options={{ headerTitleAlign: 'center', title: 'Usuário' }}/>
+        <Stack.Screen name="Redefinir" component={Redefinir} options={{headerTitleAlign: 'center'}} />
+        <Stack.Screen name="Lista" component={Lista} options={{headerTitleAlign: 'center', title: 'Lista de Contatos' }}/>
+        <Stack.Screen name="Contato" component={Contato}  options={{headerTitleAlign: 'center'}}/>
+        <Stack.Screen name="Alteracontato" component={Alteracontato} options={{headerTitleAlign: 'center', title:'  Contato' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
