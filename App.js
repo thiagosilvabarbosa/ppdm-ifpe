@@ -1,11 +1,14 @@
-import React, { useLayoutEffect } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { Avatar, Text, Input } from "react-native-elements";
-import { Button, ListItem } from "@rneui/themed";
-import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer,useNavigation,useRoute } from '@react-navigation/native';
-import { useState } from "react";
+import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
+import { createStackNavigator } from "@react-navigation/stack";
+import { Button, ListItem } from "@rneui/themed";
+import { useLayoutEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from "react-native";
+import { Avatar, Input, Text } from "react-native-elements";
+
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebaseConfig";
+
 
 const Stack = createStackNavigator();
 
@@ -35,6 +38,9 @@ const DATA = [
 
 
 const Login = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  
   return (
     <View style={styles.container}>
       <Avatar
@@ -46,17 +52,30 @@ const Login = ({ navigation }) => {
       />
       <View style={styles.formContainer}>
         <Text style={styles.label}>Email</Text>
-        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+        <Input placeholder="Email" containerStyle={styles.emailContainer} value={email} onChangeText={setEmail} />
         <Text style={styles.label}>Senha</Text>
         <Input
           placeholder="Senha"
           secureTextEntry={true}
           containerStyle={styles.senhaContainer}
+          value={senha} 
+          onChangeText={setSenha}
         />
       </View>
 
       <View style={styles.ButtomContainer}>
-        <Button onPress={() => navigation.navigate("Lista")}
+        <Button onPress={async() =>{
+          try{
+            
+            await signInWithEmailAndPassword(auth, email, senha);
+            navigation.navigate("Lista");
+
+
+          }catch(error){
+
+            alert("Erro no login: " + error.message);
+          }
+        } }
           buttonStyle={{
             marginBottom: 30,
           }}
@@ -77,26 +96,46 @@ const Login = ({ navigation }) => {
 };
 
 const Cadastro = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   return (
     <View style={styles.container}>
+
       <View style={styles.formContainer}>
+        
         <Text style={styles.label}>Nome</Text>
+
         <Input placeholder="Nome" containerStyle={styles.emailContainer} />
         <Text style={styles.label}>Cpf</Text>
+
         <Input placeholder="CPF" containerStyle={styles.cpfContainer} />
         <Text style={styles.label}>Email</Text>
-        <Input placeholder="Email" containerStyle={styles.emailContainer} />
+
+        <Input placeholder="Email" containerStyle={styles.emailContainer} value={email} onChangeText={setEmail} />
         <Text style={styles.label}>Senha</Text>
-        <Input placeholder="Senha" containerStyle={styles.senhaContainer} />
+
+        <Input placeholder="Senha" containerStyle={styles.senhaContainer} value={senha} onChangeText={setSenha} />
+      
       </View>
 
       <View style={styles.ButtomContainer}>
         <Button
-          onPress={() => navigation.navigate("Login")}
+          onPress={async() => {
+            try {
+
+                const credenciaisUsuario = await createUserWithEmailAndPassword(auth, email, senha);
+                const user = credenciaisUsuario.user;
+                alert("cadastro realizado com sucesso");
+                navigation.navigate("Login");
+            } catch(error){
+                alert("erro ao cadastrar")
+            }
+          }}
           buttonStyle={{
             marginBottom: 20,
           }}
         >Salvar
+        
         </Button>
       </View>
     </View>
