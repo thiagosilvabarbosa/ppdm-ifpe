@@ -96,25 +96,27 @@ const Login = ({ navigation }) => {
 };
 
 const Cadastro = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [emailCadastro, setEmailCadastro] = useState("");
+  const [senhaCadastro, setSenhaCadastro] = useState("");
   return (
     <View style={styles.container}>
 
       <View style={styles.formContainer}>
         
-        <Text style={styles.label}>Nome</Text>
+        {/* <Text style={styles.label}>Nome</Text>
 
         <Input placeholder="Nome" containerStyle={styles.emailContainer} />
         <Text style={styles.label}>Cpf</Text>
 
-        <Input placeholder="CPF" containerStyle={styles.cpfContainer} />
+        <Input placeholder="CPF" containerStyle={styles.cpfContainer} /> */}
+
         <Text style={styles.label}>Email</Text>
 
-        <Input placeholder="Email" containerStyle={styles.emailContainer} value={email} onChangeText={setEmail} />
+        <Input placeholder="Email" containerStyle={styles.emailContainer} value={emailCadastro} onChangeText={setEmailCadastro} />
+        
         <Text style={styles.label}>Senha</Text>
 
-        <Input placeholder="Senha" containerStyle={styles.senhaContainer} value={senha} onChangeText={setSenha} />
+        <Input placeholder="Senha" containerStyle={styles.senhaContainer} value={senhaCadastro} onChangeText={setSenhaCadastro} />
       
       </View>
 
@@ -123,7 +125,7 @@ const Cadastro = ({ navigation }) => {
           onPress={async() => {
             try {
 
-                const credenciaisUsuario = await createUserWithEmailAndPassword(auth, email, senha);
+                const credenciaisUsuario = await createUserWithEmailAndPassword(auth, emailCadastro, senhaCadastro);
                 const user = credenciaisUsuario.user;
                 alert("cadastro realizado com sucesso");
                 navigation.navigate("Login");
